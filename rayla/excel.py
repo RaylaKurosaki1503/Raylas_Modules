@@ -9,6 +9,15 @@ Description: This file contains all easy-to-read functions in order to access
 import openpyxl.utils
 
 
+def create_workbook():
+    """
+    Creates a new workbook
+
+    :return: An empty workbook
+    """
+    return openpyxl.Workbook()
+
+
 def get_workbook(path):
     """
     Gets the workbook from the path.
