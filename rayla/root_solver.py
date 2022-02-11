@@ -12,9 +12,6 @@ import sympy as sym
 MAX = 1000000
 
 
-################################################################################
-
-
 def bisection(f, a, b, TOL):
     """
     The Bisection Method
