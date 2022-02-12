@@ -21,24 +21,30 @@ def bisection(f, a, b, TOL):
     :param b: Right end point
     :param TOL: Accuracy
     """
+    # If the Intermediate Value Theorem is satisfied
     if f(a) * f(b) > 0:
+        # Exits the program if the Intermediate Value Theorem is not satisfied
         raise Exception("f does not have a root in the interval [" + str(a) +
                         "," + str(b) + "].")
+    # Set a counter for the number of iterations
     i = 0
-    while ((b - a) / 2 > TOL) and (i < MAX):
+    # Continue until you reached the max number of iterations
+    while i < MAX:
+        # Increment iteration counter
         i += 1
-        c = (a + b) / 2
-        if f(c) == 0:
-            return c
-        if f(a) * f(c) < 0:
-            b = c
+        # Compute the midpoint of the interval
+        root = (a + b) / 2
+        # If the solution is found or if the interval is small enough
+        if (f(root) == 0) or ((b - a) / 2 < TOL):
+            # Return the midpoint of the interval
+            return root
+        # Determine the new interval if the solution is not found.
+        if f(a) * f(root) < 0:
+            b = root
         else:
-            a = c
-    if i == MAX:
-        raise Exception("The Bisection Method failed.")
-    else:
-        return (a + b) / 2
-    pass
+            a = root
+    # Exits the program if the algorithm reached the max number of iterations.
+    raise Exception("The Bisection Method failed.")
 
 
 def fpi(g, x0, TOL):
@@ -49,17 +55,23 @@ def fpi(g, x0, TOL):
     :param x0: Initial guess
     :param TOL: Accuracy
     """
+    # Set a counter for the number of iterations
     i = 0
-    root = g(x0)
-    while (np.abs(root - x0) >= TOL) and (i < MAX):
+    # Continue until you reached the max number of iterations
+    while i < MAX:
+        # Increment iteration counter
         i += 1
-        x0 = root
+        # Compute the new root
         root = g(x0)
-    if i == MAX:
-        raise Exception("The Fixed-Point Iteration Method failed.")
-    else:
-        return root
-    pass
+        # If the magnitude of the difference of the old and new root is small
+        # enough
+        if np.abs(root - x0) < TOL:
+            # Return the root
+            return root
+        # Set the initial guess as the new root
+        x0 = root
+    # Exits the program if the algorithm reached the max number of iterations.
+    raise Exception("The Fixed-Point Iteration Method failed.")
 
 
 def newton(f, x0, TOL):
@@ -70,19 +82,28 @@ def newton(f, x0, TOL):
     :param x0: Initial guess
     :param TOL: Accuracy
     """
+    # Set a counter for the number of iterations
     i = 0
+    # Compute f', the derivative of f
     x = sym.symbols('x')
     df = sym.diff(f(x), x)
-    root = x0 - (f(x0) / df.evalf(subs={x: x0}))
-    while (np.abs(root - x0) >= TOL) and (i < MAX):
+    # Continue until you reached the max number of iterations
+    while i < MAX:
+        # Increment iteration counter
         i += 1
+        # Compute f'(x0)
+        df_x = df.evalf(subs={x: x0})
+        # Compute the root
+        root = x0 - (f(x0) / df_x)
+        # If the magnitude of the difference of the old and new root is small
+        # enough
+        if np.abs(root - x0) < TOL:
+            # Return the root
+            return root
+        # Set the initial guess as the new root
         x0 = root
-        root = x0 - (f(x0) / df.evalf(subs={x: x0}))
-    if i == MAX:
-        raise Exception("Newton's Method failed.")
-    else:
-        return root
-    pass
+    # Exits the program if the algorithm reached the max number of iterations.
+    raise Exception("Newton's Method failed.")
 
 
 def secant(f, x0, x1, TOL):
@@ -94,18 +115,23 @@ def secant(f, x0, x1, TOL):
     :param x1: Initial guess 2
     :param TOL: Accuracy
     """
+    # Set a counter for the number of iterations
     i = 0
-    root = x1 - (f(x1) * (x1 - x0) / (f(x1) - f(x0)))
-    while (np.abs(root - x0) >= TOL) and (i < MAX):
+    # Continue until you reached the max number of iterations
+    while i < MAX:
+        # Increment iteration counter
         i += 1
-        x0 = x1
-        x1 = root
+        # Compute the new root
         root = x1 - (f(x1) * (x1 - x0) / (f(x1) - f(x0)))
-    if i == MAX:
-        raise Exception("The Secant Method failed.")
-    else:
-        return root
-    pass
+        # If the magnitude of the difference of root and the first initial
+        # guess is small enough
+        if np.abs(root - x0) < TOL:
+            # Return the root
+            return root
+        # Set the previous values equal to the current values
+        x0, x1 = x1, root
+    # Exits the program if the algorithm reached the max number of iterations.
+    raise Exception("The Secant Method failed.")
 
 
 def false_position(f, a, b, TOL):
@@ -117,24 +143,30 @@ def false_position(f, a, b, TOL):
     :param b: Right end point
     :param TOL: Accuracy
     """
+    # If the Intermediate Value Theorem is satisfied
     if f(a) * f(b) > 0:
+        # Exits the program if the Intermediate Value Theorem is not satisfied
         raise Exception("f does not have a root in the interval [" + str(a) +
                         "," + str(b) + "].")
+    # Set a counter for the number of iterations
     i = 0
-    while ((b - a) / 2 > TOL) and (i < MAX):
+    # Continue until you reached the max number of iterations
+    while i < MAX:
+        # Increment iteration counter
         i += 1
-        c = (b * f(a) - a * f(b)) / (f(a) - f(b))
-        if f(c) == 0:
-            return c
-        if f(a) * f(c) < 0:
-            b = c
+        # Compute the new root
+        root = (b * f(a) - a * f(b)) / (f(a) - f(b))
+        # If the solution is found or if the interval is small enough
+        if (f(root) == 0) or ((b - a) / 2 < TOL):
+            # Return the root
+            return root
+        # Determine the new interval
+        if f(a) * f(root) < 0:
+            b = root
         else:
-            a = c
-    if i == MAX:
-        raise Exception("The False Position Method failed.")
-    else:
-        return (b * f(a) - a * f(b)) / (f(a) - f(b))
-    pass
+            a = root
+    # Exits the program if the algorithm reached the max number of iterations.
+    raise Exception("The False Position Method failed.")
 
 
 def muller(f, x0, x1, x2, TOL):
@@ -173,7 +205,6 @@ def muller(f, x0, x1, x2, TOL):
         d1, d2 = (f1 - f0) / h1, (f2 - f1) / h2
         d = (d2 - d1) / (h2 + h1)
     raise Exception("Muller's Method failed. ")
-    pass
 
 
 def steffensen(f, x0, TOL):
@@ -184,16 +215,24 @@ def steffensen(f, x0, TOL):
     :param x0: Initial guess
     :param TOL: Accuracy
     """
+    # Set a counter for the number of iterations
     i = 0
+    # Continue until you reached the max number of iterations
     while i < MAX:
+        # Compute some values
         x1 = f(x0)
         x2 = f(x1)
+        # Compute the root
         root = x0 - ((x1 - x0) ** 2 / (x2 - 2 * x1 + x0))
+        # If the magnitude of the difference of root and the first initial
+        # guess is small enough
         if np.abs(root - x0) < TOL:
+            # Return the root
             return root
+        # Set the initial guess as the new root
         x0 = root
+    # Exits the program if the algorithm reached the max number of iterations.
     raise Exception("Steffensen's method Method failed.")
-    pass
 
 
 def itp(f, a, b, k1, k2, n0, TOL):
@@ -260,24 +299,26 @@ def halley(f, x0, TOL):
     :param x0: Initial guess
     :param TOL: Accuracy
     """
+    # Set a counter for the number of iterations
     i = 0
+    # Compute the first and second derivatives of f
     x = sym.symbols('x')
-    f_x = f(x0)
     df = sym.diff(f(x), x)
-    df_x = df.evalf(subs={x: x0})
     ddf = sym.diff(f(x), x, 2)
-    ddf_x = ddf.evalf(subs={x: x0})
-    root = x0 - (2 * f_x * df_x / (2 * df_x ** 2 - f_x * ddf_x))
-    while (np.abs(root - x0) >= TOL) and (i < MAX):
-        print(root)
+    # Continue until you reached the max number of iterations
+    while i < MAX:
+        # Increment iteration counter
         i += 1
-        x0 = root
+        # Compute f(x0), f'(x0), f''(x0)
         f_x = f(x0)
         df_x = df.evalf(subs={x: x0})
         ddf_x = ddf.evalf(subs={x: x0})
+        # Compute the root
         root = x0 - (2 * f_x * df_x / (2 * df_x ** 2 - f_x * ddf_x))
-    if i == MAX:
-        raise Exception("Halley's Method failed.")
-    else:
-        return root
-    pass
+        if np.abs(root - x0) < TOL:
+            # Return the root
+            return root
+        # Set the initial guess as the new root
+        x0 = root
+    # Exits the program if the algorithm reached the max number of iterations.
+    raise Exception("Halley's Method failed.")
