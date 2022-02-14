@@ -34,9 +34,9 @@ def bisection(f, a, b, TOL):
         i += 1
         # Compute the midpoint of the interval
         root = (a + b) / 2
-        # If the solution is found or if the interval is small enough
-        if (f(root) == 0) or ((b - a) / 2 < TOL):
-            # Return the midpoint of the interval
+        # If the root at f is small enough
+        if np.abs(f(root)) < TOL:
+            # Return the root
             return root
         # Determine the new interval if the solution is not found.
         if f(a) * f(root) < 0:
@@ -99,7 +99,7 @@ def newton(f, x0, TOL):
         # enough
         if np.abs(root - x0) < TOL:
             # Return the root
-            return root
+            return float(root)
         # Set the initial guess as the new root
         x0 = root
     # Exits the program if the algorithm reached the max number of iterations.
@@ -156,8 +156,8 @@ def false_position(f, a, b, TOL):
         i += 1
         # Compute the new root
         root = (b * f(a) - a * f(b)) / (f(a) - f(b))
-        # If the solution is found or if the interval is small enough
-        if (f(root) == 0) or ((b - a) / 2 < TOL):
+        # If the root at f is small enough
+        if np.abs(f(root)) < TOL:
             # Return the root
             return root
         # Determine the new interval
