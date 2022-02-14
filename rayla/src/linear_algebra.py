@@ -556,6 +556,7 @@ def basis_row_space(A):
     # Reduce the matrix to its reduced row echelon form
     R = rref(M)
     row_space = []
+    # Get all the non-zero rows
     for row in R:
         if not (row.tolist().count(0) == len(row)):
             row_space.append(row.tolist())
@@ -563,7 +564,20 @@ def basis_row_space(A):
 
 
 def basis_col_space(A):
-    return
+    """
+    Determines the basis for the column space of a matrix.
+
+    :param A: A matrix.
+    :return: A list of vectors that make up the column space of A.
+    """
+    M = copy.deepcopy(A)
+    # Reduce the matrix to its reduced row echelon form
+    R = rref(M)
+    row_space = []
+    for row in R:
+        if not (row.tolist().count(0) == len(row)):
+            row_space.append(row.tolist())
+    return row_space
 
 
 def basis_null_space(A):
