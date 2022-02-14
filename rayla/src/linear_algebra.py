@@ -1,8 +1,12 @@
 """
 Author: Rayla Kurosaki
 File: linear_algebra.py
-Description: This file contains functions to solve vector/matrix based problems
-             and contains algorithms for different
+Description: This file contains functions to solve vector/matrix based problems.
+             These functions are based on the formulas and algorithms from the
+             following textbooks:
+             1. "Linear Algebra, A Modern Introduction" by David Poole
+                (4th edition)
+             2.
 """
 import numpy as np
 import fractions
