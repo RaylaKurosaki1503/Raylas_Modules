@@ -6,7 +6,7 @@ Description: This file tests all the functions in root_solver.py.
 
 import numpy as np
 import sympy as sym
-import rayla.root_solver as rs
+import root_solver as rs
 
 
 def test_bisection():
