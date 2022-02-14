@@ -11,7 +11,6 @@ import rayla.root_solver as rs
 
 def test_bisection():
     print("Testing bisection()")
-    # 32/631
     fs = [
         lambda x: x ** 3 + x - 1,
         lambda x: x ** 3 - 9,
@@ -58,7 +57,6 @@ def test_bisection():
 
 
 def test_fpi():
-    # 45/631
     print("Testing fpi()")
     fs = [
         lambda x: x + np.cos(x) - np.sin(x),
