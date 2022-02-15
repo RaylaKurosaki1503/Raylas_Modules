@@ -251,18 +251,230 @@ def test_proj():
 
 
 def test_ref():
-    return
-
-
-def test_rank():
+    print("Testing ref()")
+    print("Since the row echelon form of a matrix is not unique, we will skip "
+          "testing this \nfunction. We will assume that the programmer has "
+          "correctly implemented the row \nechelon form algorithm.\n")
     return
 
 
 def test_rref():
+    print("Testing rref()")
+    Ms = [
+        np.array([
+            [1, 2, -3, 9],
+            [2, -1, 1, 0],
+            [4, -1, 1, 4]
+        ], dtype=float),
+        np.array([
+            [1, -1, -1, 0],
+            [-1, 3, 1, 5],
+            [3, 1, 7, 2]
+        ], dtype=float),
+        np.array([
+            [1, -3, -2, 0],
+            [-1, 2, 1, 0],
+            [2, 4, 6, 0]
+        ], dtype=float),
+        np.array([
+            [2, 3, -1, 4, 1],
+            [3, -1, 0, 1, 1],
+            [3, -4, 1, -1, 2]
+        ], dtype=float),
+        np.array([
+            [2, 1, 3],
+            [4, 1, 7],
+            [2, 5, -1]
+        ], dtype=float),
+        np.array([
+            [-1, 3, -2, 4, 0],
+            [2, -6, 1, -2, -3],
+            [1, -3, 4, -8, 2]
+        ], dtype=float),
+        np.array([
+            [1 / 2, 1, -1, -6, 0, 2],
+            [1 / 6, 1 / 2, 0, -3, 1, -1],
+            [1 / 3, 0, -2, 0, -4, 8]
+        ], dtype=float),
+        np.array([
+            [np.sqrt(2), 1, 2, 1],
+            [0, np.sqrt(2), -3, -np.sqrt(2)],
+            [0, -1, np.sqrt(2), 1]
+        ], dtype=float),
+        np.array([
+            [1, 1, 2, 1, 1],
+            [1, -1, -1, 1, 0],
+            [0, 1, 1, 0, -1],
+            [1, 1, 0, 1, 2]
+        ], dtype=float),
+        np.array([
+            [1, 1, 1, 1, 4],
+            [1, 2, 3, 4, 10],
+            [1, 3, 6, 10, 20],
+            [1, 4, 10, 20, 35]
+        ], dtype=float),
+    ]
+    res = [
+        np.array([
+            [1, 0, 0, 2],
+            [0, 1, 0, 5],
+            [0, 0, 1, 1]
+        ]),
+        np.array([
+            [1, 0, 0, 17 / 10],
+            [0, 1, 0, 5 / 2],
+            [0, 0, 1, -4 / 5]
+        ]),
+        np.array([
+            [1, 0, 1, 0],
+            [0, 1, 1, 0],
+            [0, 0, 0, 0]
+        ]),
+        np.array([
+            [1, 0, 0, 1, 1],
+            [0, 1, 0, 2, 2],
+            [0, 0, 1, 4, 7]
+        ]),
+        np.array([
+            [1, 0, 2],
+            [0, 1, -1],
+            [0, 0, 0]
+        ]),
+        np.array([
+            [1, -3, 0, 0, -2],
+            [0, 0, 1, -2, 1],
+            [0, 0, 0, 0, 0]
+        ]),
+        np.array([
+            [1, 0, -6, 0, -12, 24],
+            [0, 1, 2, -6, 6, -10],
+            [0, 0, 0, 0, 0, 0]
+        ]),
+        np.array([
+            [1, 0, 0, np.sqrt(2)],
+            [0, 1, 0, -1],
+            [0, 0, 1, 0]
+        ]),
+        np.array([
+            [1, 0, 0, 1, 0],
+            [0, 1, 0, 0, 0],
+            [0, 0, 1, 0, 0],
+            [0, 0, 0, 0, 1]
+        ]),
+        np.array([
+            [1, 0, 0, 0, 1],
+            [0, 1, 0, 0, 1],
+            [0, 0, 1, 0, 1],
+            [0, 0, 0, 1, 1]
+        ]),
+    ]
+    for i in range(len(Ms)):
+        M = Ms[i]
+        r1 = np.round(la.rref(M), 4)
+        r2 = np.round(res[i], 4)
+        if not is_equal(r1, r2):
+            raise Exception("Test " + str(i + 1) + " of rref() failed. "
+                            + str(r1) + " =/= " + str(r2) + ".")
+    print("All tests for rref() passed!\n")
+    return
+
+
+def test_rank():
+    print("Testing rank()")
+    Ms = [
+        np.array([
+            [1, 2, -3, 9],
+            [2, -1, 1, 0],
+            [4, -1, 1, 4]
+        ], dtype=float),
+        np.array([
+            [1, -1, -1, 0],
+            [-1, 3, 1, 5],
+            [3, 1, 7, 2]
+        ], dtype=float),
+        np.array([
+            [1, -3, -2, 0],
+            [-1, 2, 1, 0],
+            [2, 4, 6, 0]
+        ], dtype=float),
+        np.array([
+            [2, 3, -1, 4, 1],
+            [3, -1, 0, 1, 1],
+            [3, -4, 1, -1, 2]
+        ], dtype=float),
+        np.array([
+            [2, 1, 3],
+            [4, 1, 7],
+            [2, 5, -1]
+        ], dtype=float),
+        np.array([
+            [-1, 3, -2, 4, 0],
+            [2, -6, 1, -2, -3],
+            [1, -3, 4, -8, 2]
+        ], dtype=float),
+        np.array([
+            [1 / 2, 1, -1, -6, 0, 2],
+            [1 / 6, 1 / 2, 0, -3, 1, -1],
+            [1 / 3, 0, -2, 0, -4, 8]
+        ], dtype=float),
+        np.array([
+            [np.sqrt(2), 1, 2, 1],
+            [0, np.sqrt(2), -3, -np.sqrt(2)],
+            [0, -1, np.sqrt(2), 1]
+        ], dtype=float),
+        np.array([
+            [1, 1, 2, 1, 1],
+            [1, -1, -1, 1, 0],
+            [0, 1, 1, 0, -1],
+            [1, 1, 0, 1, 2]
+        ], dtype=float),
+        np.array([
+            [1, 1, 1, 1, 4],
+            [1, 2, 3, 4, 10],
+            [1, 3, 6, 10, 20],
+            [1, 4, 10, 20, 35]
+        ], dtype=float),
+    ]
+    res = [
+        3, 3, 2, 3, 2, 2, 2, 3, 4, 4
+    ]
+    for i in range(len(Ms)):
+        M = Ms[i]
+        r1 = la.rank(M)
+        r2 = res[i]
+        if not (r1 == r2):
+            raise Exception("Test " + str(i + 1) + " of rank() failed. "
+                            + str(r1) + " =/= " + str(r2) + ".")
+    print("All tests for rank() passed!\n")
     return
 
 
 def test_is_consistent():
+    print("Testing is_consistent()")
+    Ms = [
+        np.array([
+            [1, 0, 3],
+            [0, 1, 2],
+            [0, 0, 0]
+        ], dtype=float),
+        np.array([
+            [1, 0, 3],
+            [0, 1, 2],
+            [0, 0, 1]
+        ], dtype=float),
+    ]
+    res = [
+        True, False,
+    ]
+    for i in range(len(Ms)):
+        M = Ms[i]
+        r1 = la.is_consistent(la.rref(M))
+        r2 = res[i]
+        if not (r1 == r2):
+            raise Exception("Test " + str(i + 1) +
+                            " of is_consistent() failed. " + str(r1) +
+                            " =/= " + str(r2) + ".")
+    print("All tests for is_consistent() passed!\n")
     return
 
 
@@ -355,27 +567,27 @@ if __name__ == '__main__':
     test_is_orthogonal()
     test_proj()
     test_ref()
-    test_rank()
     test_rref()
+    test_rank()
     test_is_consistent()
-    test_is_linear_combination_vector()
-    test_is_linearly_independent_vector()
-    test_multiply()
-    test_power()
-    test_is_symmetric()
-    test_is_linear_combination_matrix()
-    test_is_linearly_independent_matrix()
-    test_is_square()
-    test_det()
-    test_gauss_jordan()
-    test_inverse_gj()
-    test_LU()
-    test_pLU()
-    test_is_row_space()
-    test_is_col_space()
-    test_basis_row_space()
-    test_basis_col_space()
-    test_basis_null_space()
-    test_dim()
-    test_nullity()
+    # test_is_linear_combination_vector()
+    # test_is_linearly_independent_vector()
+    # test_multiply()
+    # test_power()
+    # test_is_symmetric()
+    # test_is_linear_combination_matrix()
+    # test_is_linearly_independent_matrix()
+    # test_is_square()
+    # test_det()
+    # test_gauss_jordan()
+    # test_inverse_gj()
+    # test_LU()
+    # test_pLU()
+    # test_is_row_space()
+    # test_is_col_space()
+    # test_basis_row_space()
+    # test_basis_col_space()
+    # test_basis_null_space()
+    # test_dim()
+    # test_nullity()
     pass
