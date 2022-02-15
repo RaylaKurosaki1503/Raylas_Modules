@@ -17,16 +17,17 @@ import copy
 #         'all': lambda x: str(fractions.Fraction(x).limit_denominator())
 #     }
 # )
-TOL = 1 * 10e-4
+d = 8
+TOL = 1 * 10 ** (-d)
 
 
 def dotP(u, v):
     """
     Computes dot product of 2 row vectors.
 
-    :param u: A row vector.
-    :param v: A row vector.
-    :return: The dot product of u and v.
+    :param u: A row vector (numpy array).
+    :param v: A row vector (numpy array).
+    :return: The dot product of u and v (number).
     """
     # Get the dimensions of both vectors
     mu, nu = np.shape(u)
@@ -49,8 +50,8 @@ def norm(v):
     """
     Computes the norm (2-norm) of a vector.
 
-    :param v: A row vector.
-    :return: The norm (2-norm) of v.
+    :param v: A row vector (numpy array).
+    :return: The norm (2-norm) of v (number).
     """
     # Get the dimensions of the vector
     m, n = np.shape(v)
@@ -69,8 +70,8 @@ def normalize(v):
     """
     Normalizes a vector.
 
-    :param v: A row vector.
-    :return: v normalized.
+    :param v: A row vector (numpy array).
+    :return: v normalized (numpy array).
     """
     return v / norm(v)
 
@@ -79,9 +80,9 @@ def distance(u, v):
     """
     Computes the distance between 2 vectors.
 
-    :param u: A row vector.
-    :param v: A row vector.
-    :return: The distance between u and v.
+    :param u: A row vector (numpy array).
+    :param v: A row vector (numpy array).
+    :return: The distance between u and v (number).
     """
     return norm(u - v)
 
@@ -90,9 +91,9 @@ def angle_between_vectors(u, v):
     """
     Computes the angle between two vectors.
 
-    :param u: A row vector.
-    :param v: A row vector.
-    :return: The angle between u and v.
+    :param u: A row vector (numpy array).
+    :param v: A row vector (numpy array).
+    :return: The angle between u and v (number).
     """
     return np.arccos(dotP(u, v) / (norm(u) * norm(v)))
 
@@ -101,9 +102,10 @@ def is_orthogonal(u, v):
     """
     Determines if both vectors are orthogonal to each other.
 
-    :param u: A row vector.
-    :param v: A row vector.
-    :return: True if u and v are orthogonal to each other. False otherwise.
+    :param u: A row vector (numpy array).
+    :param v: A row vector (numpy array).
+    :return: True if u and v are orthogonal to each other. False otherwise
+             (boolean).
     """
     return dotP(u, v) == 0
 
@@ -112,43 +114,69 @@ def proj(v, u):
     """
     Computes the projection of v onto u.
 
-    :param u: A row vector.
-    :param v: A row vector.
-    :return: The projection of v onto u.
+    :param u: A row vector (numpy array).
+    :param v: A row vector (numpy array).
+    :return: The projection of v onto u (numpy array).
     """
     return (dotP(u, v) / dotP(u, u)) * u
 
 
 def ref(M):
     """
-    Performs row echelon form on a matrix.
+    Reduces a matrix to its row echelon form.
 
-    :param M: A matrix.
-    :return: The row echelon form of M.
+    :param M: A matrix (numpy array).
+    :return: The row echelon form of M (numpy array).
     """
-    # Get the dimensions of the matrix
-    m, n = np.shape(M)
-    # Set the pivot counter
-    p = 0
-    # Iterate through each column
-    for col in range(n):
-        if col < m:
-            # If the pivot is a 0, find a row to swap
-            if M[p][col] == 0:
-                swap = False
-                # Iterate through each row below the pivoting row
-                for row in range(p + 1, m):
-                    if M[row][col] != 0:
-                        M[[p, row]] = M[[row, p]]
-                        swap = True
-                        break
-            # Make all entries below the pivot a 0
-            for row in range(p + 1, m):
-                if M[row][col] != 0:
-                    c = M[row][col] / M[p][col]
-                    M[row] = M[row] - c * M[p]
-            if (M[p][col] != 0) or swap:
-                p += 1
+    rows, cols = np.shape(M)
+    pivot = 0
+    for r in range(rows):
+        if pivot >= cols:
+            return M
+        i = r
+        while np.abs(M[i][pivot]) < TOL:
+            i += 1
+            if i == rows:
+                i = r
+                pivot += 1
+                if pivot == cols:
+                    return M
+        if not (i == r):
+            M[[i, r]] = M[[r, i]]
+        for i in range(pivot, rows):
+            if not (i == r):
+                M[i] = M[i] - (M[i][pivot] / M[r][pivot]) * M[r]
+        pivot += 1
+    return M
+
+
+def rref(M):
+    """
+    Reduces a matrix to its reduced row echelon form.
+
+    :param M: A matrix (numpy array).
+    :return: The reduced row echelon form of M (numpy array).
+    """
+    rows, cols = np.shape(M)
+    pivot = 0
+    for r in range(rows):
+        if pivot >= cols:
+            return M
+        i = r
+        while np.abs(M[i][pivot]) < TOL:
+            i += 1
+            if i == rows:
+                i = r
+                pivot += 1
+                if pivot == cols:
+                    return M
+        if not (i == r):
+            M[[i, r]] = M[[r, i]]
+        M[r] = M[r] / M[r][pivot]
+        for i in range(rows):
+            if not (i == r):
+                M[i] = M[i] - M[i][pivot] * M[r]
+        pivot += 1
     return M
 
 
@@ -156,8 +184,8 @@ def rank(M):
     """
     Returns the rank of a matrix.
 
-    :param M: A matrix.
-    :return: The rank of M.
+    :param M: A matrix (numpy array).
+    :return: The rank of M (number).
     """
     # Get the dimensions of the matrix
     m, n = np.shape(M)
@@ -166,42 +194,10 @@ def rank(M):
     # iterate through each row of the row echelon form of the matrix
     for row in ref(M):
         # Increment the counter by 1 if the row is a non-zero row
-        if row.tolist().count(0) != n:
+        if np.round(row, d).tolist().count(0) != n:
             rnk += 1
     # Return the rank of a matrix.
     return rnk
-
-
-def rref(M):
-    """
-
-    :param M: A matrix.
-    :return: The reduced row echelon form of M.
-    """
-    m, n = np.shape(M)
-    p = 0
-    for col in range(n):
-        swap = False
-        if col <= m:
-            # If the pivot is a 0
-            if np.abs(M[p][col]) <= TOL:
-                # Find a row to swap
-                for row in range(p + 1, m):
-                    if M[row][col] > TOL:
-                        M[[p, row]] = M[[row, p]]
-                        swap = True
-                        break
-            if np.abs(M[p][col]) > TOL:
-                M[p] = M[p] / M[p][col]
-            # Make all entries below the pivot a 0
-            for row in range(0, m):
-                if np.abs(M[p][col]) > TOL:
-                    if row != p:
-                        c = M[row][col] / M[p][col]
-                        M[row] = M[row] - c * M[p]
-            if (M[p][col] != 0) or swap:
-                p += 1
-    return M
 
 
 def is_consistent(M):
@@ -209,10 +205,10 @@ def is_consistent(M):
     Determines if the system is consistent. This is checked by confirming if
     the last row is a zero-row.
 
-    :param M: A matrix
-    :return: True if M is consistent. False otherwise.
+    :param M: A matrix (numpy array).
+    :return: True if M is consistent. False otherwise (boolean).
     """
-    return M[-1].tolist().count(0) == len(M[0])
+    return np.round(M[-1], d).tolist().count(0) == len(M[0])
 
 
 def is_linear_combination_vector(vs, v):
@@ -237,7 +233,7 @@ def is_linear_combination_vector(vs, v):
         else:
             M[i] = vs[i]
     # Transpose the matrix, then reduce the matrix to it's reduced row echelon
-    # form, then determine if the matrix is consistent (or if last row is a
+    # form, then determine if the matrix is consistent (if last row is a
     # zero-row).
     return is_consistent(rref(np.transpose(M)))
 
@@ -523,15 +519,15 @@ def pLU(M):
     return np.transpose(P), L, U
 
 
-# def is_row_space(A, b):
-#     """
-#     Determines if a vector is in the column space of a matrix.
-#
-#     :param A: A matrix.
-#     :param b: A vector.
-#     :return: True if b is in the column space of A. False otherwise.
-#     """
-#     return
+def is_row_space(A, b):
+    """
+    Determines if a vector is in the column space of a matrix.
+
+    :param A: A matrix.
+    :param b: A vector.
+    :return: True if b is in the column space of A. False otherwise.
+    """
+    return
 
 
 def is_col_space(A, b):
@@ -574,9 +570,8 @@ def basis_col_space(A):
     :param A: A matrix.
     :return: A list of vectors that make up the column space of A.
     """
-    M = copy.deepcopy(A)
     # Reduce the matrix to its reduced row echelon form
-    R = rref(M)
+    R = np.round(rref(copy.deepcopy(A)), d)
     row_space = []
     for row in R:
         if not (row.tolist().count(0) == len(row)):
@@ -594,14 +589,3 @@ def dim(S):
 
 def nullity(A):
     return
-
-
-if __name__ == '__main__':
-    A=np.array([
-        [1,1,3,1,6],
-        [2,-1,0,1,-1],
-        [-3,2,1,-2,1],
-        [4,1,6,1,3]
-    ], dtype=float)
-    print(basis_row_space(A))
-    pass
