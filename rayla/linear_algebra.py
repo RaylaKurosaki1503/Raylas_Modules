@@ -1,14 +1,18 @@
+###############################################################################
 """
 Author: Rayla Kurosaki
 File: linear_algebra.py
 File type: Module
 Description: This file contains functions to solve vector/matrix based problems
              numerically. These functions are based on the formulas and
-             algorithms from the following textbooks:
+             algorithms from the following references:
              1. "Linear Algebra, A Modern Introduction" by David Poole
                 (4th edition)
              2.
 """
+###############################################################################
+
+
 import numpy as np
 import copy
 
@@ -621,9 +625,15 @@ def dim(S):
 
 def nullity(M):
     return np.shape(M)[1] - rank(M)
+
+
 def eigen(M):
     return
+
+
 def cramer(M):
     return
+
+
 def inverse_adjoint(M):
     return
