@@ -129,3 +129,5 @@ dmypy.json
 .pyre/
 *.xml
 *.iml
+rayla/test/test_linear_algebra.py
+rayla/test/test_root_solver.py
