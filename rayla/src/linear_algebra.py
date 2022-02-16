@@ -1,32 +1,45 @@
 """
 Author: Rayla Kurosaki
 File: linear_algebra.py
-Description: This file contains functions to solve vector/matrix based problems.
-             These functions are based on the formulas and algorithms from the
-             following textbooks:
+File type: Module
+Description: This file contains functions to solve vector/matrix based problems
+             numerically. These functions are based on the formulas and
+             algorithms from the following textbooks:
              1. "Linear Algebra, A Modern Introduction" by David Poole
                 (4th edition)
              2.
 """
 import numpy as np
-import fractions
 import copy
 
-# np.set_printoptions(
-#     formatter={
-#         'all': lambda x: str(fractions.Fraction(x).limit_denominator())
-#     }
-# )
 d = 8
 TOL = 1 * 10 ** (-d)
 
 
-def dotP(u, v):
+################################################################################
+# Helper functions
+################################################################################
+def separate_augmented_matrix(M_aug):
+    """
+    A helper function to separate an augmented matrix into its coefficient
+    matrix and column vector.
+
+    :param M_aug: An augmented matrix (numpy.array).
+    :return: The coefficient matrix (numpy.array) and the column vector
+             (numpy.array).
+    """
+    return M_aug[:, :-1], M_aug[:, -1]
+
+
+################################################################################
+# Main functions
+################################################################################
+def dot_product(u, v):
     """
     Computes dot product of 2 row vectors.
 
-    :param u: A row vector (numpy array).
-    :param v: A row vector (numpy array).
+    :param u: A row vector (numpy.array).
+    :param v: A row vector (numpy.array).
     :return: The dot product of u and v (number).
     """
     # Get the dimensions of both vectors
@@ -39,18 +52,24 @@ def dotP(u, v):
     if not (nu == nv):
         raise Exception("Vectors are not the same length.")
     # Perform the dot product of two vectors
-    # res = u_1 v_1 + u_2 v_3 + u_3 v_3 + ... + u_n v_n
-    res = 0
-    for i in range(nu):
-        res += u[0][i] * v[0][i]
-    return res
+    """
+    Method 1 (using the definition of the dot product):
+    """
+    # res = 0
+    # for i in range(nu):
+    #     res += u[0][i] * v[0][i]
+    # return res
+    """
+    Method 2 (one-line code):
+    """
+    return np.sum(u * v)
 
 
 def norm(v):
     """
     Computes the norm (2-norm) of a vector.
 
-    :param v: A row vector (numpy array).
+    :param v: A row vector (numpy.array).
     :return: The norm (2-norm) of v (number).
     """
     # Get the dimensions of the vector
@@ -59,19 +78,25 @@ def norm(v):
     if not (m == 1):
         raise Exception("Vector is not a row vector.")
     # Perform the norm of a vector
-    # res = sqrt(v_1 v_1 + v_2 v_2 + ... + v_n v_n)
-    res = 0
-    for i in range(n):
-        res += v[0][i] ** 2
-    return np.sqrt(res)
+    """
+    Method 1 (Using the definition of teh norm/2-norm):
+    """
+    # res = 0
+    # for i in range(n):
+    #     res += v[0][i] ** 2
+    # return np.sqrt(res)
+    """
+    Method 2 (one-line code):
+    """
+    return np.sqrt(np.sum(v * v))
 
 
 def normalize(v):
     """
     Normalizes a vector.
 
-    :param v: A row vector (numpy array).
-    :return: v normalized (numpy array).
+    :param v: A row vector (numpy.array).
+    :return: v normalized (numpy.array).
     """
     return v / norm(v)
 
@@ -80,8 +105,8 @@ def distance(u, v):
     """
     Computes the distance between 2 vectors.
 
-    :param u: A row vector (numpy array).
-    :param v: A row vector (numpy array).
+    :param u: A row vector (numpy.array).
+    :param v: A row vector (numpy.array).
     :return: The distance between u and v (number).
     """
     return norm(u - v)
@@ -91,42 +116,42 @@ def angle_between_vectors(u, v):
     """
     Computes the angle between two vectors.
 
-    :param u: A row vector (numpy array).
-    :param v: A row vector (numpy array).
+    :param u: A row vector (numpy.array).
+    :param v: A row vector (numpy.array).
     :return: The angle between u and v (number).
     """
-    return np.arccos(dotP(u, v) / (norm(u) * norm(v)))
+    return np.arccos(dot_product(u, v) / (norm(u) * norm(v)))
 
 
 def is_orthogonal(u, v):
     """
     Determines if both vectors are orthogonal to each other.
 
-    :param u: A row vector (numpy array).
-    :param v: A row vector (numpy array).
+    :param u: A row vector (numpy.array).
+    :param v: A row vector (numpy.array).
     :return: True if u and v are orthogonal to each other. False otherwise
              (boolean).
     """
-    return dotP(u, v) == 0
+    return dot_product(u, v) == 0
 
 
 def proj(v, u):
     """
     Computes the projection of v onto u.
 
-    :param u: A row vector (numpy array).
-    :param v: A row vector (numpy array).
-    :return: The projection of v onto u (numpy array).
+    :param u: A row vector (numpy.array).
+    :param v: A row vector (numpy.array).
+    :return: The projection of v onto u (numpy.array).
     """
-    return (dotP(u, v) / dotP(u, u)) * u
+    return (dot_product(u, v) / dot_product(u, u)) * u
 
 
 def ref(M):
     """
     Reduces a matrix to its row echelon form.
 
-    :param M: A matrix (numpy array).
-    :return: The row echelon form of M (numpy array).
+    :param M: A matrix (numpy.array).
+    :return: The row echelon form of M (numpy.array).
     """
     rows, cols = np.shape(M)
     pivot = 0
@@ -150,12 +175,43 @@ def ref(M):
     return M
 
 
+def gaussian_elimination(M):
+    """
+    Gaussian Elimination: The process of applying row reduction onto an
+    augmented matrix of a system of linear equations.
+
+    :param M: An augmented matrix.
+    :return: The row echelon form of M.
+    """
+    return ref(M)
+
+
+def rank(M):
+    """
+    Returns the rank of a matrix.
+
+    :param M: A matrix (numpy.array).
+    :return: The rank of M (number).
+    """
+    # Get the dimensions of the matrix
+    m, n = np.shape(M)
+    # Records the rank of a matrix
+    rnk = 0
+    # iterate through each row of the row echelon form of the matrix
+    for row in ref(M):
+        # Increment the counter by 1 if the row is a non-zero row
+        if np.round(row, d).tolist().count(0) != n:
+            rnk += 1
+    # Return the rank of a matrix.
+    return rnk
+
+
 def rref(M):
     """
     Reduces a matrix to its reduced row echelon form.
 
-    :param M: A matrix (numpy array).
-    :return: The reduced row echelon form of M (numpy array).
+    :param M: A matrix (numpy.array).
+    :return: The reduced row echelon form of M (numpy.array).
     """
     rows, cols = np.shape(M)
     pivot = 0
@@ -180,45 +236,57 @@ def rref(M):
     return M
 
 
-def rank(M):
+def gauss_jordan_elimination(M):
     """
-    Returns the rank of a matrix.
+    Gauss-Jordan Elimination: The process of applying row reduction onto an
+    augmented matrix of a system of linear equations, reducing the matrix as
+    much as possible.
 
-    :param M: A matrix (numpy array).
-    :return: The rank of M (number).
+    :param M: An augmented matrix.
+    :return: The reduced row echelon form of M.
     """
-    # Get the dimensions of the matrix
-    m, n = np.shape(M)
-    # Records the rank of a matrix
-    rnk = 0
-    # iterate through each row of the row echelon form of the matrix
-    for row in ref(M):
-        # Increment the counter by 1 if the row is a non-zero row
-        if np.round(row, d).tolist().count(0) != n:
-            rnk += 1
-    # Return the rank of a matrix.
-    return rnk
+    return rref(M)
 
 
 def is_consistent(M):
     """
-    Determines if the system is consistent. This is checked by confirming if
-    the last row is a zero-row.
+    Determines if the system is consistent.
 
-    :param M: A matrix (numpy array).
+    :param M: A matrix (numpy.array).
     :return: True if M is consistent. False otherwise (boolean).
     """
-    return np.round(M[-1], d).tolist().count(0) == len(M[0])
+    # Reduce the augmented matrix to its reuced row echelon form
+    M_rref = rref(M)
+    # Separate the augmented matrix
+    A, b = separate_augmented_matrix(M_rref)
+    # Get the dimensions of the matrix
+    m_a, n_a = np.shape(A)
+    # Iterate through each row
+    for i in range(m_a):
+        if np.round(A[i], d).tolist().count(0) == n_a:
+            if not (b[i] == 0):
+                return False
+    return True
+
+
+def num_free_var(M):
+    """
+    Computes the number of free variables in a matrix.
+
+    :param M: A matrix (numpy.array).
+    :return: The number of free variables in M.
+    """
+    return (np.shape(M)[1] - 1) - rank(M)
 
 
 def is_linear_combination_vector(vs, v):
     """
     Determine if a vector is a linear combination of the other vectors.
 
-    :param vs: A list of row vectors.
-    :param v: A row vector.
+    :param vs: A list of row vectors (numpy.array).
+    :param v: A row vector (numpy.array).
     :return: True is v is a linear combination of the set of vectors. False
-             otherwise.
+             otherwise (boolean).
     """
     # Check if all vectors are of the same length
     for vec in vs:
@@ -226,37 +294,40 @@ def is_linear_combination_vector(vs, v):
             raise Exception("Vectors are not the same length")
     # Create the transposed augmented matrix from the set of vectors
     r, c = 1 + len(vs), len(v[0])
-    M = np.zeros((r, c))
+    M_aug_t = np.zeros((r, c))
     for i in range(r):
         if i == r - 1:
-            M[i] = v
+            M_aug_t[i] = v
         else:
-            M[i] = vs[i]
+            M_aug_t[i] = vs[i]
     # Transpose the matrix, then reduce the matrix to it's reduced row echelon
-    # form, then determine if the matrix is consistent (if last row is a
-    # zero-row).
-    return is_consistent(rref(np.transpose(M)))
+    # form, then determine if the matrix is consistent.
+    return is_consistent(rref(np.transpose(M_aug_t)))
 
 
 def is_linearly_independent_vector(vs):
     """
     Determines if the set of vectors are linearly independent.
 
-    :param vs: A list of row vectors.
+    :param vs: A list of row vectors (numpy.array).
     :return: True if the set of vectors are linearly independent. False
-             otherwise.
+             otherwise (boolean).
     """
     # Check if all vectors are of the same length
+    # If the number of vectors is greater than the number of entries in a vector
+    if len(vs) > len(vs[0][0]):
+        # The set of vectors are linearly dependent.
+        return False
     # Create the transposed augmented matrix from the set of vectors
-    r, c = 1 + len(vs), len(vs[0][0])
-    M = np.zeros((r, c))
+    r, c = len(vs), len(vs[0][0])
+    M_aug_t = np.zeros((r, c))
     for i in range(r):
-        if i < r - 1:
-            M[i] = vs[i][0]
-    # Transpose the matrix, then reduce the matrix to it's reduced row echelon
-    # form, then determine if the matrix is consistent (or if last row is a
-    # zero-row).
-    return is_consistent(rref(np.transpose(M)))
+        M_aug_t[i] = vs[i]
+    # If rank(M) < number of row vectors
+    if rank(np.transpose(M_aug_t)) < r:
+        # The set of vectors is linearly dependent
+        return False
+    return True
 
 
 def multiply(A, B):
@@ -283,7 +354,7 @@ def power(M, n):
 
 def is_equal(M, N):
     """
-    Determines if both matrices are equal to each other.
+    Determines if both matrices are equal.
 
     :param M: A matrix.
     :param N: A matrix.
@@ -392,26 +463,6 @@ def det(M):
         return res
 
 
-def gauss_jordan(M):
-    """
-    Performs the Gauss-Jordan elimination algorithm on a matrix.
-
-    :param M: A matrix.
-    :return:
-    """
-    # Get the dimensions of the matrix
-    m, n = np.shape(M)
-    # Create the identity matrix based on the size of the matrix
-    I = np.zeros(np.shape(M))
-    for i in range(min(m, n)):
-        I[i][i] = 1
-    # Create the super augmented matrix by adding the identity matrix to the
-    # right of the matrix
-    M_sam = np.append(M, I, axis=1)
-    # Reduce the super augmented matrix to its reduced row echelon form
-    return rref(M_sam)
-
-
 def inverse_gj(M):
     """
     Computes the inverse of a matrix via Gauss-Jordan Elimination.
@@ -425,8 +476,15 @@ def inverse_gj(M):
     if not is_square(M):
         raise Exception("Matrix is not square. Therefore the inverse does not "
                         "exist.")
+    # Create the identity matrix based on the size of the matrix
+    I = np.zeros(np.shape(M))
+    for i in range(min(m, n)):
+        I[i][i] = 1
+    # Create the super augmented matrix by adding the identity matrix to the
+    # right of the matrix
+    M_sam = np.append(M, I, axis=1)
     # Perform Gauss-Jordan Elimination on the matrix
-    M_gj = gauss_jordan(M)
+    M_gj = gauss_jordan_elimination(M_sam)
     # Split the matrix in "half". A potential identity matrix and the potential
     # inverse of the matrix
     M_identity, M_inverse = np.hsplit(M_gj, 2)
@@ -519,15 +577,15 @@ def pLU(M):
     return np.transpose(P), L, U
 
 
-def is_row_space(A, b):
-    """
-    Determines if a vector is in the column space of a matrix.
-
-    :param A: A matrix.
-    :param b: A vector.
-    :return: True if b is in the column space of A. False otherwise.
-    """
-    return
+# def is_row_space(A, b):
+#     """
+#     Determines if a vector is in the column space of a matrix.
+#
+#     :param A: A matrix.
+#     :param b: A vector.
+#     :return: True if b is in the column space of A. False otherwise.
+#     """
+#     return
 
 
 def is_col_space(A, b):
@@ -545,47 +603,27 @@ def is_col_space(A, b):
     return is_consistent(rref(A_aug))
 
 
-def basis_row_space(A):
+def basis(M):
     """
-    Determines the basis for the row space of a matrix.
+    Determines the basis for the row space, column space, and the null space
+    of a matrix.
 
-    :param A: A matrix.
-    :return: A list of vectors that make up the row space of A.
+    :param M: A matrix.
+    :return: The list that makes up the row space (R), column space (C), and
+             the null space (N) of M.
     """
-    M = copy.deepcopy(A)
-    # Reduce the matrix to its reduced row echelon form
-    R = rref(M)
-    row_space = []
-    # Get all the non-zero rows
-    for row in R:
-        if not (row.tolist().count(0) == len(row)):
-            row_space.append(row.tolist())
-    return row_space
-
-
-def basis_col_space(A):
-    """
-    Determines the basis for the column space of a matrix.
-
-    :param A: A matrix.
-    :return: A list of vectors that make up the column space of A.
-    """
-    # Reduce the matrix to its reduced row echelon form
-    R = np.round(rref(copy.deepcopy(A)), d)
-    row_space = []
-    for row in R:
-        if not (row.tolist().count(0) == len(row)):
-            row_space.append(row.tolist())
-    return row_space
-
-
-def basis_null_space(A):
     return
 
 
 def dim(S):
+    return len(S)
+
+
+def nullity(M):
+    return np.shape(M)[1] - rank(M)
+def eigen(M):
     return
-
-
-def nullity(A):
+def cramer(M):
+    return
+def inverse_adjoint(M):
     return
