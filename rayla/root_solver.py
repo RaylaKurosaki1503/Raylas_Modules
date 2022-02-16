@@ -1,16 +1,19 @@
+###############################################################################
 """
 Author: Rayla Kurosaki
 File: root_solver.py
+File type: Module
 Description: This file contains functions to find the roots to linear and
              nonlinear equations. These functions are based on the formulas and
-             algorithms from the following textbooks:
+             algorithms from the following references:
              1. "Numerical Analysis" by Timothy Sauer (3rd edition)
              2. "Numerical Analysis" by Richard L. Burden (10th edition)
              3.
 """
+###############################################################################
+
 
 import numpy as np
-
 import sympy as sym
 
 MAX = 1000000
