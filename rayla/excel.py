@@ -1,10 +1,13 @@
-################################################################################
+###############################################################################
 """
 Author: Rayla Kurosaki
-Description: This file contains all easy-to-read functions in order to access
-             and edit Excel workbooks.
+File: excel.py
+File type: Module
+Description: This file contains easy to read functions in order to manipulate
+             Workbooks (Microsoft Excel Spreadsheets).
 """
-################################################################################
+###############################################################################
+
 
 import openpyxl.utils
 
