@@ -1,8 +1,9 @@
 ###############################################################################
 """
 Author: Rayla Kurosaki
+
 File: root_solver.py
-File type: Module
+
 Description: This file contains functions to find the roots to linear and
              nonlinear equations. These functions are based on the formulas and
              algorithms from the following references:
