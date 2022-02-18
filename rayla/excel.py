@@ -1,8 +1,9 @@
 ###############################################################################
 """
 Author: Rayla Kurosaki
+
 File: excel.py
-File type: Module
+
 Description: This file contains easy to read functions in order to manipulate
              Workbooks (Microsoft Excel Spreadsheets).
 """
