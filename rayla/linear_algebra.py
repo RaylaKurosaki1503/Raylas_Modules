@@ -1,8 +1,9 @@
 ###############################################################################
 """
 Author: Rayla Kurosaki
+
 File: linear_algebra.py
-File type: Module
+
 Description: This file contains functions to solve vector/matrix based problems
              numerically. These functions are based on the formulas and
              algorithms from the following references:
