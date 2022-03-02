@@ -1,4 +1,3 @@
-###############################################################################
 """
 Author: Rayla Kurosaki
 
@@ -11,7 +10,6 @@ Description: This file contains functions to solve vector/matrix based problems
                 (4th edition)
              2.
 """
-###############################################################################
 
 
 import numpy as np
