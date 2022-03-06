@@ -6,8 +6,6 @@ File: excel.py
 Description: This file contains easy to read functions in order to manipulate
              Workbooks (Microsoft Excel Spreadsheets).
 """
-
-
 import openpyxl.utils
 
 
