@@ -11,7 +11,6 @@ Description: This file contains functions to find the roots to linear and
              3.
 """
 
-
 import numpy as np
 import sympy as sym
 
@@ -213,6 +212,26 @@ def muller(f, x0, x1, x2, TOL):
     raise Exception("Muller's Method failed. ")
 
 
+def iqi():
+    """
+    Inverse Quadratic Interpolation Method
+
+    :param f: A continuous function of one variable
+    :param TOL: Accuracy
+    """
+    pass
+
+
+def brent():
+    """
+    Brent's Method
+
+    :param f: A continuous function of one variable
+    :param TOL: Accuracy
+    """
+    pass
+
+
 def steffensen(f, x0, TOL):
     """
     Steffensen's Method
@@ -239,6 +258,10 @@ def steffensen(f, x0, TOL):
         x0 = root
     # Exits the program if the algorithm reached the max number of iterations.
     raise Exception("Steffensen's method Method failed.")
+
+
+def horner():
+    pass
 
 
 def itp(f, a, b, k1, k2, n0, TOL):
