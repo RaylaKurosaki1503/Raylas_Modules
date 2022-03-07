@@ -55,7 +55,6 @@ def test_lagrange():
 
 
 def test_newton_divided_differences():
-    # Set the variable for the Lagrange basis polynomial.
     x = sym.symbols('x')
     points = [
         [(0, 1), (2, 2), (3, 4)],
