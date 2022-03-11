@@ -38,7 +38,7 @@ def get_max_len(data_to_print):
     Computes the spacing for each column.
 
     :param data_to_print: The data needed to be printed.
-    :return: Get the column spacing.
+    :return: The spacing for each column.
     """
     max_len = []
     # Get the shape of the 2-d array.
@@ -62,17 +62,17 @@ def get_spacing(max_len, header):
     return math.ceil((boundary_length - len(header)) / 2) - 1
 
 
-def print_boundary(f, lst):
+def print_boundary(f, max_len_lst):
     """
     Prints the top and/or bottom most borders of the table.
 
     :param f: File reader.
-    :param lst: A list of numbers to determine the size of a column.
+    :param max_len_lst: A list of numbers to determine the size of a column.
     """
     string = f"|"
-    for i, v in enumerate(lst):
+    for i, v in enumerate(max_len_lst):
         string += f"{'-' * (2 + v)}"
-        if i + 1 == len(lst):
+        if i + 1 == len(max_len_lst):
             string += f"|"
             pass
         else:
@@ -84,17 +84,17 @@ def print_boundary(f, lst):
     pass
 
 
-def print_separator(f, lst):
+def print_separator(f, max_len_lst):
     """
     This prints out a line that separate terms.
 
     :param f: File reader.
-    :param lst: A list of numbers to determine the size of a column.
+    :param max_len_lst: A list of numbers to determine the size of a column.
     """
     string = f"|"
-    for i, v in enumerate(lst):
+    for i, v in enumerate(max_len_lst):
         string += f"{'-' * (2 + v)}"
-        if i + 1 == len(lst):
+        if i + 1 == len(max_len_lst):
             string += f"|"
             pass
         else:
@@ -106,16 +106,16 @@ def print_separator(f, lst):
     pass
 
 
-def print_row(f, data, lst):
+def print_row(f, data, max_len_lst):
     """
     Prints out the data.
 
     :param f: File reader.
     :param data: Data to print out.
-    :param lst: A list of numbers to determine the size of a column.
+    :param max_len_lst: A list of numbers to determine the size of a column.
     """
     string = f"|"
-    for e1, e2 in zip(data, lst):
+    for e1, e2 in zip(data, max_len_lst):
         string += f" {e1}{' ' * (e2 - len(e1))} |"
     f.write(f"{string} \n")
     logging.info(string)
