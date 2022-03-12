@@ -8,8 +8,8 @@ Description:
 
 import sympy as sym
 
-from interpolation import lagrange
-from interpolation import ndd_polynomial
+from rayla.math.interpolation import lagrange
+from rayla.math.interpolation import ndd_polynomial
 
 
 def test_lagrange():
