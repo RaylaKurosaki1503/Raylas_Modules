@@ -8,10 +8,10 @@ Description: This file test the most relevant functions in root_solver.py
 import numpy as np
 import sympy as sym
 
-from root_solver import bisection
-from root_solver import fpi
-from root_solver import newton
-from root_solver import secant
+from rayla.math.root_solver import bisection
+from rayla.math.root_solver import fpi
+from rayla.math.root_solver import newton
+from rayla.math.root_solver import secant
 
 
 def test_bisection():
