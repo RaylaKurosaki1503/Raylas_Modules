@@ -11,8 +11,8 @@ Description: This file contains functions to solve vector/matrix based problems
              2.
 """
 
-
 import numpy as np
+
 import copy
 
 d = 8
