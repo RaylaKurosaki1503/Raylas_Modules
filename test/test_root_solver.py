@@ -5,6 +5,7 @@ File: test_root_solver.py
 
 Description: This file test the most relevant functions in root_solver.py
 """
+
 import numpy as np
 import sympy as sym
 
