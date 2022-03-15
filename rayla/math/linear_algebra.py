@@ -45,16 +45,12 @@ def dot_product(u, v):
     :param v: A row vector (numpy.array).
     :return: The dot product of u and v (number).
     """
-    # Get the dimensions of both vectors
     mu, nu = np.shape(u)
     mv, nv = np.shape(v)
-    # Check if both vectors are row vectors
     if not (mu == 1 and mv == 1):
         raise Exception("Vector(s) are not row vectors.")
-    # Check if both vectors have the same dimensions
     if not (nu == nv):
         raise Exception("Vectors are not the same length.")
-    # Perform the dot product of two vectors
     """
     Method 1 (using the definition of the dot product):
     """
@@ -75,12 +71,9 @@ def norm(v):
     :param v: A row vector (numpy.array).
     :return: The norm (2-norm) of v (number).
     """
-    # Get the dimensions of the vector
     m, n = np.shape(v)
-    # Check if the vector is a row vector
     if not (m == 1):
         raise Exception("Vector is not a row vector.")
-    # Perform the norm of a vector
     """
     Method 1 (Using the definition of teh norm/2-norm):
     """
@@ -196,16 +189,11 @@ def rank(M):
     :param M: A matrix (numpy.array).
     :return: The rank of M (number).
     """
-    # Get the dimensions of the matrix
     m, n = np.shape(M)
-    # Records the rank of a matrix
     rnk = 0
-    # iterate through each row of the row echelon form of the matrix
     for row in ref(M):
-        # Increment the counter by 1 if the row is a non-zero row
         if np.round(row, d).tolist().count(0) != n:
             rnk += 1
-    # Return the rank of a matrix.
     return rnk
 
 
@@ -258,13 +246,9 @@ def is_consistent(M):
     :param M: A matrix (numpy.array).
     :return: True if M is consistent. False otherwise (boolean).
     """
-    # Reduce the augmented matrix to its reuced row echelon form
     M_rref = rref(M)
-    # Separate the augmented matrix
     A, b = separate_augmented_matrix(M_rref)
-    # Get the dimensions of the matrix
     m_a, n_a = np.shape(A)
-    # Iterate through each row
     for i in range(m_a):
         if np.round(A[i], d).tolist().count(0) == n_a:
             if not (b[i] == 0):
@@ -291,11 +275,9 @@ def is_linear_combination_vector(vs, v):
     :return: True is v is a linear combination of the set of vectors. False
              otherwise (boolean).
     """
-    # Check if all vectors are of the same length
     for vec in vs:
         if not (np.shape(vec)[1] == np.shape(v)[1]):
             raise Exception("Vectors are not the same length")
-    # Create the transposed augmented matrix from the set of vectors
     r, c = 1 + len(vs), len(v[0])
     M_aug_t = np.zeros((r, c))
     for i in range(r):
@@ -303,8 +285,6 @@ def is_linear_combination_vector(vs, v):
             M_aug_t[i] = v
         else:
             M_aug_t[i] = vs[i]
-    # Transpose the matrix, then reduce the matrix to it's reduced row echelon
-    # form, then determine if the matrix is consistent.
     return is_consistent(rref(np.transpose(M_aug_t)))
 
 
@@ -316,19 +296,13 @@ def is_linearly_independent_vector(vs):
     :return: True if the set of vectors are linearly independent. False
              otherwise (boolean).
     """
-    # Check if all vectors are of the same length
-    # If the number of vectors is greater than the number of entries in a vector
     if len(vs) > len(vs[0][0]):
-        # The set of vectors are linearly dependent.
         return False
-    # Create the transposed augmented matrix from the set of vectors
     r, c = len(vs), len(vs[0][0])
     M_aug_t = np.zeros((r, c))
     for i in range(r):
         M_aug_t[i] = vs[i]
-    # If rank(M) < number of row vectors
     if rank(np.transpose(M_aug_t)) < r:
-        # The set of vectors is linearly dependent
         return False
     return True
 
@@ -386,18 +360,13 @@ def is_linear_combination_matrix(Ms, M):
     :return: True if M is a linear combination of the set of matrices. False
              otherwise.
     """
-    # Create a zero matrix based on the matrices from the parameters
     m, n = np.shape(M)[0] * np.shape(M)[1], 1 + len(Ms)
     M_t = np.zeros((m, n))
-    # Create a transposed augmented matrix
     for i in range(m):
         if i == n - 1:
             M_t[i] = M.flatten()
         else:
             M_t[i] = Ms[i].flatten()
-    # Transpose the matrix, then reduce the matrix to it's reduced row echelon
-    # form, then determine if the matrix is consistent (or if last row is a
-    # zero-row).
     return is_consistent(rref(np.transpose(M_t)))
 
 
@@ -410,18 +379,13 @@ def is_linearly_independent_matrix(Ms):
              otherwise.
     """
     M = np.zeros(np.shape(Ms[0]))
-    # Create a zero matrix based on the matrices from the parameters
     m, n = np.shape(M)[0] * np.shape(M)[1], 1 + len(Ms)
     M_t = np.zeros((m, n))
-    # Create a transposed augmented matrix
     for i in range(m):
         if i == n - 1:
             M_t[i] = M.flatten()
         else:
             M_t[i] = Ms[i].flatten()
-    # Transpose the matrix, then reduce the matrix to it's reduced row echelon
-    # form, then get the last row of the matrix, then determine if the last row
-    # is a zero-row
     return rref(np.transpose(M_t))[-1].tolist().count(0) == n
 
 
@@ -442,20 +406,13 @@ def det(M):
     :param M: A square matrix.
     :return: The determinant of M.
     """
-    # Check if the matrix is square
     if not is_square(M):
         raise Exception("Matrix is not square, so the determinant does not "
                         "exist.")
-    # Get the dimensions of the matrix
     m, n = np.shape(M)
-    # If the matrix is a 2x2 matrix
     if m == 2:
-        # Compute the determinant of a 2x2 matrix
         return M[0][0] * M[1][1] - M[0][1] * M[1][0]
-    # For larger matrices
     else:
-        # Compute the determinant of larger square matrices using the cofactor
-        # expansion, expanding along the first row.
         res = 0
         for i in range(m):
             S = M[0][i] * det(np.delete(np.delete(M, 0, 0), i, 1))
@@ -473,23 +430,15 @@ def inverse_gj(M):
     :param M: A matrix.
     :return: The inverse of M if it exists.
     """
-    # Get the dimensions of the matrix
     m, n = np.shape(M)
-    # Check if the matrix is square
     if not is_square(M):
         raise Exception("Matrix is not square. Therefore the inverse does not "
                         "exist.")
-    # Create the identity matrix based on the size of the matrix
     I = np.zeros(np.shape(M))
     for i in range(min(m, n)):
         I[i][i] = 1
-    # Create the super augmented matrix by adding the identity matrix to the
-    # right of the matrix
     M_sam = np.append(M, I, axis=1)
-    # Perform Gauss-Jordan Elimination on the matrix
     M_gj = gauss_jordan_elimination(M_sam)
-    # Split the matrix in "half". A potential identity matrix and the potential
-    # inverse of the matrix
     M_identity, M_inverse = np.hsplit(M_gj, 2)
     if is_equal(M_identity, np.eye(m)):
         return M_inverse
@@ -504,33 +453,24 @@ def LU(M):
     :param M: A matrix.
     :return: The LU factorization of M.
     """
-    # Get the dimensions of the matrix
     m, n = np.shape(M)
-    # Create the lower triangular matrix
     L = np.zeros((min(m, n), min(m, n)))
     for i in range(min(m, n)):
         L[i][i] = 1
-    # Set the pivot counter
     p = 0
-    # Iterate through each column
     for col in range(n):
         if col < m:
-            # If the pivot is a 0, find a row to swap
             if M[p][col] == 0:
                 swap = False
-                # Iterate through each row below the pivoting row
                 for row in range(p + 1, m):
                     if M[row][col] != 0:
                         M[[p, row]] = M[[row, p]]
                         swap = True
                         break
-            # Make all entries below the pivot a 0
             for row in range(p + 1, m):
                 if M[row][col] != 0:
                     c = M[row][col] / M[p][col]
                     M[row] = M[row] - c * M[p]
-                    # Edit the corresponding entry of the lower triangular
-                    # matrix
                     L[row][col] = c
             if (M[p][col] != 0) or swap:
                 p += 1
@@ -545,37 +485,28 @@ def pLU(M):
     :return: The p^TLU factorization of M.
     """
     A = copy.deepcopy(M)
-    # Get the dimensions of the matrix
     m, n = np.shape(M)
-    # Create the permutation matrix and the lower triangular matrix
     P = np.zeros((n, m))
     for i in range(min(m, n)):
         P[i][i] = 1
-    # Set the pivot counter
     p = 0
-    # Iterate through each column
     for col in range(n):
         if col < m:
-            # If the pivot is a 0, find a row to swap
             if M[p][col] == 0:
                 swap = False
-                # Iterate through each row below the pivoting row
                 for row in range(p + 1, m):
                     if M[row][col] != 0:
                         M[[p, row]] = M[[row, p]]
                         P[[p, row]] = P[[row, p]]
                         swap = True
                         break
-            # Make all entries below the pivot a 0
             for row in range(p + 1, m):
                 if M[row][col] != 0:
                     c = M[row][col] / M[p][col]
                     M[row] = M[row] - c * M[p]
             if (M[p][col] != 0) or swap:
                 p += 1
-    # Compute PA
     PA = multiply(P, A)
-    # Factor PA into its' LU factorization
     L, U = LU(PA)
     return np.transpose(P), L, U
 
@@ -599,10 +530,7 @@ def is_col_space(A, b):
     :param b: A row vector.
     :return: True if b is in the column space of A. False otherwise.
     """
-    # Create the augmented matrix from A and b.
     A_aug = np.append(A, np.transpose(b), axis=1)
-    # Reduce the augmented matrix to its reduced row echelon form. Then
-    # determine if the matrix is consistent.
     return is_consistent(rref(A_aug))
 
 
