@@ -22,7 +22,6 @@ def get_data_to_print(header, data):
     :param data:
     :return: The necessary data to print.
     """
-    # Initialize the data to print.
     data_to_print = copy.deepcopy(np.array([header]))
     for e in data:
         lst = np.array([
@@ -42,9 +41,7 @@ def get_max_len(data_to_print):
     :return: The spacing for each column.
     """
     max_len = []
-    # Get the shape of the 2-d array.
     rows, cols = np.shape(data_to_print)
-    # Get the length of the longest string in each column.
     for i in range(cols):
         max_len.append(len(max(data_to_print[:, i], key=len)))
         pass
