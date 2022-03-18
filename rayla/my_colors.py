@@ -3,11 +3,14 @@ Author: Rayla Kurosaki
 
 File: my_colors.py
 
-Description:
+Description: This file returns a list of certain color sets.
 """
 
 
 def get_math_colors():
+    """
+    Gets the standard mathematics colors.
+    """
     black = "#000000"
     red = "#FF0000"
     blue = "#0000FF"
@@ -15,6 +18,9 @@ def get_math_colors():
 
 
 def get_shades_cyan():
+    """
+    Gets the different shades of cyan.
+    """
     aqua = "#00FFFF"
     celeste = "#B2FFFF"
     electric_blue = "#7DF9FF"
@@ -24,6 +30,9 @@ def get_shades_cyan():
 
 
 def get_shades_pink():
+    """
+    Gets the different shades of pink.
+    """
     pink = "#FFC0CB"
     hot_pink = "#FF69B4"
     deep_pink = "#FF1493"
@@ -42,6 +51,9 @@ def get_shades_pink():
 
 
 def get_genshin_colors(color_type):
+    """
+    Gets specific color genshin impact sets.
+    """
     match color_type:
         case "Rarity":
             return {4: "#64578D", 5: "#A1662A"}
@@ -58,4 +70,7 @@ def get_genshin_colors(color_type):
 
 
 def get_red_yellow_green_colorscale():
+    """
+    Gets a set of colors to define a red-yellow-green colorscale.
+    """
     return ["#F8696B", "#FFEB84", "#63BE7B"]
