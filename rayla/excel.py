@@ -8,6 +8,9 @@ Description: This file contains easy to read functions in order to manipulate
 """
 
 import openpyxl.utils
+from openpyxl.styles import Border, Side
+
+COLUMN_WIDTH_OFFSET = 0.77
 
 
 def create_workbook():
@@ -62,18 +65,6 @@ def create_new_worksheet(workbook, worksheet_name, pos=None):
     pass
 
 
-def worksheet_exists(workbook, worksheet_name):
-    """
-    Determines if the worksheet with the given name exists in the workbook.
-
-    :param workbook: Current workbook to manipulate.
-    :param worksheet_name: Name of the worksheet to search.
-    :return: True if the worksheet with the given name exists in the
-             workbook. False otherwise.
-    """
-    return worksheet_name in get_worksheet_names(workbook)
-
-
 def get_worksheet(workbook, worksheet_name=None):
     """
     Returns the active worksheet or the worksheet with the specified name.
@@ -86,7 +77,10 @@ def get_worksheet(workbook, worksheet_name=None):
     if worksheet_name is None:
         return workbook.active
     else:
-        return workbook[worksheet_name]
+        if worksheet_name in get_worksheet_names(workbook):
+            return workbook[worksheet_name]
+        else:
+            return None
     pass
 
 
@@ -220,6 +214,28 @@ def unmerge_cells(worksheet, cell1, cell2):
     """
     worksheet.unmerge_cells(f"{cell1}:{cell2}")
     pass
+
+
+def apply_thick_border_style(worksheet, cell_range):
+    rows = worksheet[cell_range]
+    side = Side(border_style='medium')
+    rows = list(rows)
+    max_y = len(rows) - 1
+    for pos_y, cells in enumerate(rows):
+        max_x = len(cells) - 1
+        for pos_x, cell in enumerate(cells):
+            border = Border(left=cell.border.left, right=cell.border.right,
+                            top=cell.border.top, bottom=cell.border.bottom)
+            if pos_x == 0:
+                border.left = side
+            if pos_x == max_x:
+                border.right = side
+            if pos_y == 0:
+                border.top = side
+            if pos_y == max_y:
+                border.bottom = side
+            if pos_x == 0 or pos_x == max_x or pos_y == 0 or pos_y == max_y:
+                cell.border = border
 
 
 def add_data_to_worksheet(worksheet, lst):
