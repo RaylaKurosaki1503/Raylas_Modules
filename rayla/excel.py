@@ -65,6 +65,18 @@ def create_new_worksheet(workbook, worksheet_name, pos=None):
     pass
 
 
+def worksheet_exists(workbook, worksheet_name):
+    """
+    Determines if the worksheet with the given name exists in the workbook.
+
+    :param workbook: Current workbook to manipulate.
+    :param worksheet_name: Name of the worksheet to search.
+    :return: True if the worksheet with the given name exists in the
+             workbook. False otherwise.
+    """
+    return worksheet_name in get_worksheet_names(workbook)
+
+
 def get_worksheet(workbook, worksheet_name=None):
     """
     Returns the active worksheet or the worksheet with the specified name.
